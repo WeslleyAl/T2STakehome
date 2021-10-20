@@ -1,0 +1,41 @@
+﻿@page "/Form"
+
+@using Data;
+
+<h3>Container Form</h3>
+
+@if (clientes == null) {
+    <span>Carregando...</span>
+} else {
+
+<EditForm Model="container" OnValidSubmit="SaveForm">
+    <DataAnnotationsValidator />
+
+    <InputSelect @bind-Value="container.IdCliente">
+        <option value="">Selecione um Cliente</option>
+        @foreach (ClienteModel cliente in clientes) {
+            <option value="@cliente.Id">@cliente.Nome</option>
+            }
+    </InputSelect>
+
+    <label for="numContainer">N&uacute;mero</label>
+    <InputText id="numContainer" @bind-Value="container.Numero"></InputText>
+    <ValidationMessage For="() => container.Numero"></ValidationMessage>
+
+    <button type="submit">Salvar</button>
+
+</EditForm>
+}
+
+@code {
+    ContainerModel container = new ContainerModel();
+    List<ClienteModel> clientes;
+
+    protected override async Task OnInitializedAsync() {
+        clientes = await ClienteModel.GetAll();
+    }
+
+    public async Task SaveForm() {
+        await container.inserir();
+    }
+}

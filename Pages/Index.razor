@@ -1,0 +1,47 @@
+﻿@page "/"
+@using Data;
+
+<h1>Hello, world!</h1>
+
+@if(containers == null) {
+    <span>Carregando</span>
+} else {
+
+
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>N&uacute;mero</th>
+                    <th>A&ccedil;&otilde;es</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ContainerModel container in containers) {
+                    <tr>
+
+                        <td>@container.NomeCliente</td>
+                        <td>@container.Numero</td>
+                        <td>editar | deletar</td>
+                        
+                    </tr>
+                }
+                </tbody>
+        </table>
+
+
+
+}
+
+
+
+@code {
+
+    List<ContainerModel> containers;
+
+    protected override async Task OnInitializedAsync() {
+        containers = await ContainerModel.GetAll();
+    }
+
+}
